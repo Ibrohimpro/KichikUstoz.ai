@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KichikUstoz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+  :root {
+    --navy:   #1a2744;
+    --blue:   #2563eb;
+    --sky:    #dbeafe;
+    --white:  #ffffff;
+    --grey:   #f1f5f9;
+    --text:   #1e293b;
+    --muted:  #64748b;
+    --border: #e2e8f0;
+    --green:  #16a34a;
+    --red:    #dc2626;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--navy);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-mark { width: 44px; height: 44px; flex-shrink: 0; }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--white); }
+  .logo-sub { font-size: 11px; color: #93c5fd; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 2px; }
+
+  main { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .hero-title { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--navy); line-height: 1.25; margin-bottom: 10px; }
+  .hero-sub { color: var(--muted); font-size: 15px; margin-bottom: 36px; line-height: 1.6; }
+
+  .role-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .role-card {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 20px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-align: center;
+    background: var(--white);
+  }
+  .role-card:hover { border-color: var(--blue); background: var(--sky); }
+  .role-icon { font-size: 32px; margin-bottom: 10px; }
+  .role-label { font-weight: 600; font-size: 16px; color: var(--navy); margin-bottom: 4px; }
+  .role-desc { font-size: 13px; color: var(--muted); }
+
+  .form-title { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--navy); margin-bottom: 6px; }
+  .form-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+
+  .field { margin-bottom: 20px; }
+
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; letter-spacing: 0.3px; }
+
+  input[type="text"], select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  input[type="text"]:focus, select:focus { border-color: var(--blue); }
+
+  .btn {
+    display: inline-block;
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s, transform 0.1s;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--blue); color: var(--white); width: 100%; margin-top: 8px; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-secondary { background: var(--grey); color: var(--navy); }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-sm { padding: 8px 18px; font-size: 13px; }
+
+  .loading-box { text-align: center; padding: 60px 0; }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--sky);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { color: var(--muted); font-size: 15px; }
+
+  .code-box {
+    background: var(--sky);
+    border: 1.5px solid #93c5fd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .code-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .code-value { font-size: 40px; font-weight: 700; color: var(--navy); letter-spacing: 8px; font-family: monospace; }
+  .code-hint { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+  .question-card {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 16px;
+    background: var(--white);
+  }
+  .q-number { font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .q-text { font-size: 16px; font-weight: 500; color: var(--navy); margin-bottom: 16px; line-height: 1.5; }
+
+  .options { display: flex; flex-direction: column; gap: 8px; }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .option:hover { border-color: var(--blue); background: var(--sky); }
+  .option.selected { border-color: var(--blue); background: var(--sky); font-weight: 500; }
+  .option.correct { border-color: var(--green); background: #dcfce7; }
+  .option.wrong { border-color: var(--red); background: #fee2e2; }
+
+  .option-letter {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--grey);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px; flex-shrink: 0;
+    color: var(--navy);
+  }
+
+  .score-wrap { text-align: center; padding: 20px 0 36px; }
+  .score-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: var(--sky);
+    border: 4px solid var(--blue);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+  .score-number { font-size: 36px; font-weight: 700; color: var(--navy); line-height: 1; }
+  .score-total { font-size: 14px; color: var(--muted); }
+  .score-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy); margin-bottom: 8px; }
+  .score-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--muted); font-size: 13px; cursor: pointer;
+    margin-bottom: 28px; background: none; border: none;
+    font-family: 'Inter', sans-serif; padding: 0;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  .divider { height: 1px; background: var(--border); margin: 32px 0; }
+
+  .preview-header {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+  }
+  .preview-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--navy); }
+
+  .enter-code-wrap { max-width: 340px; margin: 0 auto; text-align: center; }
+  input.code-input {
+    text-align: center; font-size: 28px;
+    letter-spacing: 6px; font-weight: 700;
+    padding: 14px; font-family: monospace;
+  }
+
+  .error-msg { color: var(--red); font-size: 13px; margin-top: 8px; display: none; }
+
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+  .badge-blue { background: var(--sky); color: var(--blue); }
+
+  .copy-btn {
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    font-family: 'Inter', sans-serif;
+  }
+  .copy-btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="logo-mark" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="22" fill="#2563eb"/>
+    <path d="M22 13 C17 17 9 16 7 19 C11 18 16 20 22 26 C28 20 33 18 37 19 C35 16 27 17 22 13Z" fill="white" opacity="0.95"/>
+    <ellipse cx="22" cy="29" rx="3" ry="2" fill="white" opacity="0.45"/>
+  </svg>
+  <div>
+    <div class="logo-text">KichikUstoz</div>
+    <div class="logo-sub">Onlayn test platformasi</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <h1 class="hero-title">Test yarating yoki topshiring</h1>
+    <p class="hero-sub">O'qituvchilar mavzu bo'yicha AI yordamida test yaratadi. O'quvchilar kod orqali testni topshiradi.</p>
+    <div class="role-cards">
+      <div class="role-card" onclick="go('screen-teacher')">
+        <div class="role-icon">📋</div>
+        <div class="role-label">O'qituvchi</div>
+        <div class="role-desc">Test yarating va o'quvchilarga yuboring</div>
+      </div>
+      <div class="role-card" onclick="go('screen-student-enter')">
+        <div class="role-icon">✏️</div>
+        <div class="role-label">O'quvchi</div>
+        <div class="role-desc">Kod orqali testga kiring</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER FORM -->
+  <div class="screen" id="screen-teacher">
+    <button class="back-link" onclick="go('screen-home')">← Orqaga</button>
+    <h2 class="form-title">Test yaratish</h2>
+    <p class="form-sub">Mavzu va parametrlarni kiriting, AI savollarni avtomatik tayyorlaydi.</p>
+
+    <div class="field">
+      <label>Mavzu</label>
+      <input type="text" id="topic-input" placeholder="Masalan: Fotosintez, Ikkinchi jahon urushi..." />
+    </div>
+    <div class="field">
+      <label>Savollar soni</label>
+      <select id="count-input">
+        <option value="5">5 ta savol</option>
+        <option value="10" selected>10 ta savol</option>
+        <option value="15">15 ta savol</option>
+        <option value="20">20 ta savol</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Qiyinlik darajasi</label>
+      <select id="level-input">
+        <option value="oson">Oson</option>
+        <option value="o'rta" selected>O'rta</option>
+        <option value="qiyin">Qiyin</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="generateTest()">Test yaratish</button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p class="loading-text" id="loading-text">Savollar tayyorlanmoqda...</p>
+    </div>
+  </div>
+
+  <!-- TEACHER PREVIEW -->
+  <div class="screen" id="screen-preview">
+    <button class="back-link" onclick="go('screen-teacher')">← Orqaga</button>
+    <div class="preview-header">
+      <div>
+        <div class="preview-title" id="preview-title">Test</div>
+        <span class="badge badge-blue" id="preview-badge"></span>
+      </div>
+    </div>
+
+    <div class="code-box">
+      <div class="code-label">O'quvchilar uchun kod</div>
+      <div class="code-value" id="test-code">----</div>
+      <div class="code-hint">Ushbu kodni o'quvchilarga yuboring</div>
+      <button class="copy-btn" onclick="copyCode()">Kodni nusxalash</button>
+    </div>
+
+    <div id="preview-questions"></div>
+    <div class="divider"></div>
+    <button class="btn btn-secondary btn-sm" onclick="go('screen-teacher')">Yangi test yaratish</button>
+  </div>
+
+  <!-- STUDENT ENTER CODE -->
+  <div class="screen" id="screen-student-enter">
+    <button class="back-link" onclick="go('screen-home')">← Orqaga</button>
+    <div class="enter-code-wrap">
+      <h2 class="form-title">Testga kirish</h2>
+      <p class="form-sub" style="margin-bottom:24px;">O'qituvchi bergan kodni kiriting</p>
+      <div class="field">
+        <input type="text" class="code-input" id="code-input" maxlength="4" placeholder="0000" oninput="this.value=this.value.toUpperCase()" />
+        <div class="error-msg" id="code-error">Bunday kod topilmadi. Tekshirib ko'ring.</div>
+      </div>
+      <div class="field">
+        <label>Ismingiz</label>
+        <input type="text" id="student-name" placeholder="To'liq ismingiz" />
+      </div>
+      <button class="btn btn-primary" onclick="enterTest()">Testga kirish</button>
+    </div>
+  </div>
+
+  <!-- STUDENT TEST -->
+  <div class="screen" id="screen-test">
+    <div id="student-test-title" style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin-bottom:6px;"></div>
+    <div id="student-test-meta" style="font-size:13px;color:var(--muted);margin-bottom:28px;"></div>
+    <div id="student-questions"></div>
+    <button class="btn btn-primary" onclick="submitTest()">Testni yakunlash</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <div class="score-wrap">
+      <div class="score-circle">
+        <div class="score-number" id="result-score">0</div>
+        <div class="score-total" id="result-total"></div>
+      </div>
+      <h2 class="score-title" id="result-msg"></h2>
+      <p class="score-sub" id="result-sub"></p>
+    </div>
+    <div id="result-review"></div>
+    <div class="divider"></div>
+    <button class="btn btn-secondary btn-sm" onclick="go('screen-home')">Bosh sahifaga qaytish</button>
+  </div>
+
+</main>
+
+<script>
+  const testStore = {};
+  let currentTest = null;
+  let studentAnswers = {};
+
+  function go(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function makeCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    return code;
+  }
+
+  function copyCode() {
+    const code = document.getElementById('test-code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Nusxalandi!';
+      setTimeout(() => btn.textContent = 'Kodni nusxalash', 2000);
+    });
+  }
+
+  async function generateTest() {
+    const topic = document.getElementById('topic-input').value.trim();
+    const count = document.getElementById('count-input').value;
+    const level = document.getElementById('level-input').value;
+
+    if (!topic) { alert('Mavzuni kiriting'); return; }
+
+    go('screen-loading');
+
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, count, level })
+      });
+
+      if (!res.ok) throw new Error('Server xatosi');
+
+      const parsed = await res.json();
+      const code = makeCode();
+
+      testStore[code] = { topic, count, level, questions: parsed.questions };
+      showPreview(code, topic, level, parsed.questions);
+
+    } catch (e) {
+      alert('Xatolik yuz berdi. Qaytadan urinib ko\'ring.');
+      go('screen-teacher');
+    }
+  }
+
+  function showPreview(code, topic, level, questions) {
+    document.getElementById('test-code').textContent = code;
+    document.getElementById('preview-title').textContent = topic;
+    document.getElementById('preview-badge').textContent = level + ' daraja • ' + questions.length + ' savol';
+
+    const wrap = document.getElementById('preview-questions');
+    wrap.innerHTML = '';
+    questions.forEach((q, i) => {
+      wrap.innerHTML += `
+        <div class="question-card">
+          <div class="q-number">Savol ${i + 1}</div>
+          <div class="q-text">${q.q}</div>
+          <div class="options">
+            ${q.options.map((opt, j) => `
+              <div class="option ${j === q.answer ? 'correct' : ''}">
+                <div class="option-letter">${['A','B','C','D'][j]}</div>
+                <span>${opt.replace(/^[A-D]\)\s*/, '')}</span>
+              </div>`).join('')}
+          </div>
+        </div>`;
+    });
+
+    go('screen-preview');
+  }
+
+  function enterTest() {
+    const code = document.getElementById('code-input').value.trim().toUpperCase();
+    const name = document.getElementById('student-name').value.trim();
+    const errEl = document.getElementById('code-error');
+
+    if (!code || !name) { alert('Kod va ismni kiriting'); return; }
+
+    if (!testStore[code]) {
+      errEl.style.display = 'block';
+      return;
+    }
+
+    errEl.style.display = 'none';
+    currentTest = { code, name, data: testStore[code] };
+    studentAnswers = {};
+    renderStudentTest();
+  }
+
+  function renderStudentTest() {
+    const { data, name } = currentTest;
+    document.getElementById('student-test-title').textContent = data.topic;
+    document.getElementById('student-test-meta').textContent =
+      name + ' — ' + data.questions.length + ' ta savol • ' + data.level + ' daraja';
+
+    const wrap = document.getElementById('student-questions');
+    wrap.innerHTML = '';
+    data.questions.forEach((q, i) => {
+      wrap.innerHTML += `
+        <div class="question-card">
+          <div class="q-number">Savol ${i + 1}</div>
+          <div class="q-text">${q.q}</div>
+          <div class="options" id="opts-${i}">
+            ${q.options.map((opt, j) => `
+              <div class="option" onclick="selectOption(${i},${j})" id="opt-${i}-${j}">
+                <div class="option-letter">${['A','B','C','D'][j]}</div>
+                <span>${opt.replace(/^[A-D]\)\s*/, '')}</span>
+              </div>`).join('')}
+          </div>
+        </div>`;
+    });
+
+    go('screen-test');
+  }
+
+  function selectOption(qi, oi) {
+    const total = currentTest.data.questions[qi].options.length;
+    for (let j = 0; j < total; j++) {
+      const el = document.getElementById(`opt-${qi}-${j}`);
+      if (el) el.classList.remove('selected');
+    }
+    const chosen = document.getElementById(`opt-${qi}-${oi}`);
+    if (chosen) chosen.classList.add('selected');
+    studentAnswers[qi] = oi;
+  }
+
+  function submitTest() {
+    const questions = currentTest.data.questions;
+    const unanswered = questions.filter((_, i) => studentAnswers[i] === undefined).length;
+
+    if (unanswered > 0) {
+      if (!confirm(`${unanswered} ta savolga javob berilmadi. Baribir yakunlaysizmi?`)) return;
+    }
+
+    let correct = 0;
+    questions.forEach((q, i) => { if (studentAnswers[i] === q.answer) correct++; });
+
+    const pct = Math.round((correct / questions.length) * 100);
+    let msg, sub;
+    if (pct >= 80) { msg = "Ajoyib natija!"; sub = "Siz mavzuni yaxshi o'zlashtirdingiz."; }
+    else if (pct >= 60) { msg = "Yaxshi!"; sub = "Biroz ko'proq takrorlash foydali bo'ladi."; }
+    else { msg = "Harakatni davom eting"; sub = "Mavzuni qayta o'rganib chiqing."; }
+
+    document.getElementById('result-score').textContent = correct;
+    document.getElementById('result-total').textContent = 'dan ' + questions.length;
+    document.getElementById('result-msg').textContent = msg;
+    document.getElementById('result-sub').textContent =
+      currentTest.name + ', natijangiz: ' + pct + '%  —  ' + sub;
+
+    const rev = document.getElementById('result-review');
+    rev.innerHTML = '';
+    questions.forEach((q, i) => {
+      const userAns = studentAnswers[i];
+      rev.innerHTML += `
+        <div class="question-card">
+          <div class="q-number">Savol ${i + 1}</div>
+          <div class="q-text">${q.q}</div>
+          <div class="options">
+            ${q.options.map((opt, j) => {
+              let cls = '';
+              if (j === q.answer) cls = 'correct';
+              else if (j === userAns && userAns !== q.answer) cls = 'wrong';
+              return `
+                <div class="option ${cls}">
+                  <div class="option-letter">${['A','B','C','D'][j]}</div>
+                  <span>${opt.replace(/^[A-D]\)\s*/, '')}</span>
+                </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+    });
+
+    go('screen-result');
+  }
+</script>
+</body>
+</html>
